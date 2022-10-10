@@ -1,0 +1,5 @@
+../Core/Src/NTagRC522.cpp:6:9:uint8_t NTagRC522::writeRegister(uint8_t, uint8_t)	32	static
+../Core/Src/NTagRC522.cpp:14:9:uint8_t NTagRC522::readRegister(uint8_t, uint8_t)	32	static,ignoring_inline_asm
+../Core/Src/NTagRC522.cpp:25:6:void NTagRC522::SetI2CHandle(I2C_HandleTypeDef*)	16	static
+../Core/Src/NTagRC522.cpp:29:6:void NTagRC522::Init(uint8_t)	16	static
+../Core/Src/NTagRC522.cpp:33:9:uint8_t NTagRC522::SanityCheck(uint8_t)	16	static
