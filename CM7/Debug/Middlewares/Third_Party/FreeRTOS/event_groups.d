@@ -1,5 +1,5 @@
 Middlewares/Third_Party/FreeRTOS/event_groups.o: \
- D:/School/ECE4981/workspace_1.10.1/NTagTest/Middlewares/Third_Party/FreeRTOS/Source/event_groups.c \
+ G:/School/ECE4981/workspace_1.10.1/NTagTest/Middlewares/Third_Party/FreeRTOS/Source/event_groups.c \
  ../../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h \
  ../Core/Inc/FreeRTOSConfig.h \
  ../../Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h \
