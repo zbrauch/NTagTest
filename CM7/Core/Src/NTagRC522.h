@@ -77,14 +77,18 @@ public:
 		// 						  0x3F			// reserved for production tests
 	};
 
-	void SetI2CHandle(I2C_HandleTypeDef *i2c);
-	void Init(uint8_t i2c_addr);
-	uint8_t SanityCheck(uint8_t i2c_addr);
+	void Init();
+	uint8_t SanityCheck();
+	uint8_t SanityCheck2();
+	void SetSPIHandle(SPI_HandleTypeDef *spi);
+
+	uint8_t GetWaterLevel();
+	uint8_t SetWaterLevel(uint8_t set_value);
 
 private:
-	I2C_HandleTypeDef *I2CHandle; //handle of the i2c interface being used
+	SPI_HandleTypeDef *SPIHandle; //handle of the spi interface being used
 
-	uint8_t writeRegister(uint8_t i2c_addr, uint8_t reg_addr);
-	uint8_t readRegister(uint8_t i2c_addr, uint8_t reg_addr);
+	uint8_t WriteRegister(uint8_t reg_addr, uint8_t write_data);
+	uint8_t ReadRegister(uint8_t reg_addr);
 
 };

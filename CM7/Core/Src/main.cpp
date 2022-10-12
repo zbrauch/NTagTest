@@ -51,7 +51,7 @@
 I2C_HandleTypeDef hi2c1;
 I2C_HandleTypeDef hi2c4;
 
-SPI_HandleTypeDef hspi2;
+SPI_HandleTypeDef hspi5;
 
 UART_HandleTypeDef huart1;
 
@@ -80,7 +80,7 @@ static void MX_GPIO_Init(void);
 static void MX_USART1_UART_Init(void);
 static void MX_I2C1_Init(void);
 static void MX_I2C4_Init(void);
-static void MX_SPI2_Init(void);
+static void MX_SPI5_Init(void);
 void StartDefaultTask(void *argument);
 void StartNTagTask(void *argument);
 
@@ -171,7 +171,7 @@ Error_Handler();
   MX_USART1_UART_Init();
   MX_I2C1_Init();
   MX_I2C4_Init();
-  MX_SPI2_Init();
+  MX_SPI5_Init();
   /* USER CODE BEGIN 2 */
 
   /* USER CODE END 2 */
@@ -415,50 +415,50 @@ static void MX_I2C4_Init(void)
 }
 
 /**
-  * @brief SPI2 Initialization Function
+  * @brief SPI5 Initialization Function
   * @param None
   * @retval None
   */
-static void MX_SPI2_Init(void)
+static void MX_SPI5_Init(void)
 {
 
-  /* USER CODE BEGIN SPI2_Init 0 */
+  /* USER CODE BEGIN SPI5_Init 0 */
 
-  /* USER CODE END SPI2_Init 0 */
+  /* USER CODE END SPI5_Init 0 */
 
-  /* USER CODE BEGIN SPI2_Init 1 */
+  /* USER CODE BEGIN SPI5_Init 1 */
 
-  /* USER CODE END SPI2_Init 1 */
-  /* SPI2 parameter configuration*/
-  hspi2.Instance = SPI2;
-  hspi2.Init.Mode = SPI_MODE_MASTER;
-  hspi2.Init.Direction = SPI_DIRECTION_2LINES;
-  hspi2.Init.DataSize = SPI_DATASIZE_4BIT;
-  hspi2.Init.CLKPolarity = SPI_POLARITY_LOW;
-  hspi2.Init.CLKPhase = SPI_PHASE_1EDGE;
-  hspi2.Init.NSS = SPI_NSS_SOFT;
-  hspi2.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_8;
-  hspi2.Init.FirstBit = SPI_FIRSTBIT_MSB;
-  hspi2.Init.TIMode = SPI_TIMODE_DISABLE;
-  hspi2.Init.CRCCalculation = SPI_CRCCALCULATION_DISABLE;
-  hspi2.Init.CRCPolynomial = 0x0;
-  hspi2.Init.NSSPMode = SPI_NSS_PULSE_ENABLE;
-  hspi2.Init.NSSPolarity = SPI_NSS_POLARITY_LOW;
-  hspi2.Init.FifoThreshold = SPI_FIFO_THRESHOLD_01DATA;
-  hspi2.Init.TxCRCInitializationPattern = SPI_CRC_INITIALIZATION_ALL_ZERO_PATTERN;
-  hspi2.Init.RxCRCInitializationPattern = SPI_CRC_INITIALIZATION_ALL_ZERO_PATTERN;
-  hspi2.Init.MasterSSIdleness = SPI_MASTER_SS_IDLENESS_00CYCLE;
-  hspi2.Init.MasterInterDataIdleness = SPI_MASTER_INTERDATA_IDLENESS_00CYCLE;
-  hspi2.Init.MasterReceiverAutoSusp = SPI_MASTER_RX_AUTOSUSP_DISABLE;
-  hspi2.Init.MasterKeepIOState = SPI_MASTER_KEEP_IO_STATE_DISABLE;
-  hspi2.Init.IOSwap = SPI_IO_SWAP_DISABLE;
-  if (HAL_SPI_Init(&hspi2) != HAL_OK)
+  /* USER CODE END SPI5_Init 1 */
+  /* SPI5 parameter configuration*/
+  hspi5.Instance = SPI5;
+  hspi5.Init.Mode = SPI_MODE_MASTER;
+  hspi5.Init.Direction = SPI_DIRECTION_2LINES;
+  hspi5.Init.DataSize = SPI_DATASIZE_8BIT;
+  hspi5.Init.CLKPolarity = SPI_POLARITY_LOW;
+  hspi5.Init.CLKPhase = SPI_PHASE_1EDGE;
+  hspi5.Init.NSS = SPI_NSS_SOFT;
+  hspi5.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_32;
+  hspi5.Init.FirstBit = SPI_FIRSTBIT_MSB;
+  hspi5.Init.TIMode = SPI_TIMODE_DISABLE;
+  hspi5.Init.CRCCalculation = SPI_CRCCALCULATION_DISABLE;
+  hspi5.Init.CRCPolynomial = 0x0;
+  hspi5.Init.NSSPMode = SPI_NSS_PULSE_ENABLE;
+  hspi5.Init.NSSPolarity = SPI_NSS_POLARITY_LOW;
+  hspi5.Init.FifoThreshold = SPI_FIFO_THRESHOLD_01DATA;
+  hspi5.Init.TxCRCInitializationPattern = SPI_CRC_INITIALIZATION_ALL_ZERO_PATTERN;
+  hspi5.Init.RxCRCInitializationPattern = SPI_CRC_INITIALIZATION_ALL_ZERO_PATTERN;
+  hspi5.Init.MasterSSIdleness = SPI_MASTER_SS_IDLENESS_00CYCLE;
+  hspi5.Init.MasterInterDataIdleness = SPI_MASTER_INTERDATA_IDLENESS_00CYCLE;
+  hspi5.Init.MasterReceiverAutoSusp = SPI_MASTER_RX_AUTOSUSP_DISABLE;
+  hspi5.Init.MasterKeepIOState = SPI_MASTER_KEEP_IO_STATE_DISABLE;
+  hspi5.Init.IOSwap = SPI_IO_SWAP_DISABLE;
+  if (HAL_SPI_Init(&hspi5) != HAL_OK)
   {
     Error_Handler();
   }
-  /* USER CODE BEGIN SPI2_Init 2 */
+  /* USER CODE BEGIN SPI5_Init 2 */
 
-  /* USER CODE END SPI2_Init 2 */
+  /* USER CODE END SPI5_Init 2 */
 
 }
 
@@ -525,9 +525,14 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOB_CLK_ENABLE();
   __HAL_RCC_GPIOA_CLK_ENABLE();
   __HAL_RCC_GPIOH_CLK_ENABLE();
+  __HAL_RCC_GPIOK_CLK_ENABLE();
+  __HAL_RCC_GPIOJ_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOD, GPIO_PIN_3, GPIO_PIN_RESET);
+
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(CSTest_GPIO_Port, CSTest_Pin, GPIO_PIN_SET);
 
   /*Configure GPIO pin : PD3 */
   GPIO_InitStruct.Pin = GPIO_PIN_3;
@@ -543,6 +548,13 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   GPIO_InitStruct.Alternate = GPIO_AF0_MCO;
   HAL_GPIO_Init(CEC_CK_MCO1_GPIO_Port, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : CSTest_Pin */
+  GPIO_InitStruct.Pin = CSTest_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_MEDIUM;
+  HAL_GPIO_Init(CSTest_GPIO_Port, &GPIO_InitStruct);
 
 }
 
@@ -578,10 +590,12 @@ void StartDefaultTask(void *argument)
 void StartNTagTask(void *argument)
 {
 	/* USER CODE BEGIN StartNTagTask */
+	/* Infinite loop */
 	NTagRC522 ntag;
-	ntag.SetI2CHandle(&hi2c4);
-	vprintf("C\r\n");
-	osDelay(10000);
+	//ntag.SetI2CHandle(&hi2c4);
+	ntag.SetSPIHandle(&hspi5);
+	vprintf("Start\r\n");
+	osDelay(1000);
 	/* Infinite loop */
 	for(;;)
 	{
@@ -589,17 +603,39 @@ void StartNTagTask(void *argument)
 		//vprintf("Version: %d\r\n", test);
 		uint8_t read_result, ret;
 		uint8_t versreg = 0x37;
-		for(uint8_t i2c_addr = 0; i2c_addr < 0xEF; i2c_addr++) {
-			//ret = HAL_I2C_Master_Transmit(&hi2c4, i2c_addr, &versreg, 1, HAL_MAX_DELAY);
-			//if(ret == HAL_OK)
-			//	  vprintf("ACK received at %d\n\r", i2c_addr);
 
-			ret = HAL_I2C_IsDeviceReady (&hi2c4, i2c_addr, 5, HAL_MAX_DELAY);
-			if(ret == HAL_OK)
-				vprintf("Dev ready at %d\n\r", i2c_addr);
-			osDelay(10);
-		}
-		//osDelay(10000);
+		/*read_result = ntag.SanityCheck();
+			vprintf("version: %d\r\n", read_result);
+			osDelay(5);
+			read_result = ntag.SanityCheck2();
+			vprintf("Second: %d\r\n", read_result);
+			osDelay(1000);*/
+
+		HAL_GPIO_WritePin(CSTest_GPIO_Port, CSTest_Pin, GPIO_PIN_RESET);
+		osDelay(1);
+		ret = ntag.SetWaterLevel(0x00);
+		HAL_GPIO_WritePin(CSTest_GPIO_Port, CSTest_Pin, GPIO_PIN_SET);
+		osDelay(10);
+		HAL_GPIO_WritePin(CSTest_GPIO_Port, CSTest_Pin, GPIO_PIN_RESET);
+		osDelay(1);
+		read_result = ntag.GetWaterLevel();
+		HAL_GPIO_WritePin(CSTest_GPIO_Port, CSTest_Pin, GPIO_PIN_SET);
+		vprintf("WaterLevel 0: %d\r\n", read_result);
+		osDelay(100);
+
+		HAL_GPIO_WritePin(CSTest_GPIO_Port, CSTest_Pin, GPIO_PIN_RESET);
+		osDelay(1);
+		ret = ntag.SetWaterLevel(0x01);
+		HAL_GPIO_WritePin(CSTest_GPIO_Port, CSTest_Pin, GPIO_PIN_SET);
+		osDelay(10);
+		HAL_GPIO_WritePin(CSTest_GPIO_Port, CSTest_Pin, GPIO_PIN_RESET);
+		osDelay(1);
+		read_result = ntag.GetWaterLevel();
+		HAL_GPIO_WritePin(CSTest_GPIO_Port, CSTest_Pin, GPIO_PIN_SET);
+		vprintf("WaterLevel 1: %d\r\n", read_result);
+		osDelay(2000);
+
+
 	}
 	/* USER CODE END StartNTagTask */
 }

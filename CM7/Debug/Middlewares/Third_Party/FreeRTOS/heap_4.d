@@ -1,5 +1,5 @@
 Middlewares/Third_Party/FreeRTOS/heap_4.o: \
- G:/School/ECE4981/workspace_1.10.1/NTagTest/Middlewares/Third_Party/FreeRTOS/Source/portable/MemMang/heap_4.c \
+ D:/School/ECE4981/workspace_1.10.1/NTagTest/Middlewares/Third_Party/FreeRTOS/Source/portable/MemMang/heap_4.c \
  ../../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h \
  ../Core/Inc/FreeRTOSConfig.h \
  ../../Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h \

@@ -224,49 +224,49 @@ void HAL_SPI_MspInit(SPI_HandleTypeDef* hspi)
 {
   GPIO_InitTypeDef GPIO_InitStruct = {0};
   RCC_PeriphCLKInitTypeDef PeriphClkInitStruct = {0};
-  if(hspi->Instance==SPI2)
+  if(hspi->Instance==SPI5)
   {
-  /* USER CODE BEGIN SPI2_MspInit 0 */
+  /* USER CODE BEGIN SPI5_MspInit 0 */
 
-  /* USER CODE END SPI2_MspInit 0 */
+  /* USER CODE END SPI5_MspInit 0 */
 
   /** Initializes the peripherals clock
   */
-    PeriphClkInitStruct.PeriphClockSelection = RCC_PERIPHCLK_SPI2;
-    PeriphClkInitStruct.Spi123ClockSelection = RCC_SPI123CLKSOURCE_PLL;
+    PeriphClkInitStruct.PeriphClockSelection = RCC_PERIPHCLK_SPI5;
+    PeriphClkInitStruct.Spi45ClockSelection = RCC_SPI45CLKSOURCE_D2PCLK1;
     if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInitStruct) != HAL_OK)
     {
       Error_Handler();
     }
 
     /* Peripheral clock enable */
-    __HAL_RCC_SPI2_CLK_ENABLE();
+    __HAL_RCC_SPI5_CLK_ENABLE();
 
-    __HAL_RCC_GPIOA_CLK_ENABLE();
-    __HAL_RCC_GPIOC_CLK_ENABLE();
-    /**SPI2 GPIO Configuration
-    PA12     ------> SPI2_SCK
-    PA11     ------> SPI2_NSS
-    PC2     ------> SPI2_MISO
-    PC3     ------> SPI2_MOSI
+    __HAL_RCC_GPIOK_CLK_ENABLE();
+    __HAL_RCC_GPIOJ_CLK_ENABLE();
+    /**SPI5 GPIO Configuration
+    PK0     ------> SPI5_SCK
+    PK1     ------> SPI5_NSS
+    PJ11     ------> SPI5_MISO
+    PJ10     ------> SPI5_MOSI
     */
-    GPIO_InitStruct.Pin = SPI2_SCK_Pin|PMOD_1_Pin;
+    GPIO_InitStruct.Pin = ARD_D13_Pin|ARD_D10_Pin;
     GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
     GPIO_InitStruct.Pull = GPIO_NOPULL;
     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-    GPIO_InitStruct.Alternate = GPIO_AF5_SPI2;
-    HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+    GPIO_InitStruct.Alternate = GPIO_AF5_SPI5;
+    HAL_GPIO_Init(GPIOK, &GPIO_InitStruct);
 
-    GPIO_InitStruct.Pin = PMOD_3_Pin|PMOD_2_Pin;
+    GPIO_InitStruct.Pin = ARD_D12_Pin|ARD_D11_Pin;
     GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
     GPIO_InitStruct.Pull = GPIO_NOPULL;
     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-    GPIO_InitStruct.Alternate = GPIO_AF5_SPI2;
-    HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
+    GPIO_InitStruct.Alternate = GPIO_AF5_SPI5;
+    HAL_GPIO_Init(GPIOJ, &GPIO_InitStruct);
 
-  /* USER CODE BEGIN SPI2_MspInit 1 */
+  /* USER CODE BEGIN SPI5_MspInit 1 */
 
-  /* USER CODE END SPI2_MspInit 1 */
+  /* USER CODE END SPI5_MspInit 1 */
   }
 
 }
@@ -279,27 +279,27 @@ void HAL_SPI_MspInit(SPI_HandleTypeDef* hspi)
 */
 void HAL_SPI_MspDeInit(SPI_HandleTypeDef* hspi)
 {
-  if(hspi->Instance==SPI2)
+  if(hspi->Instance==SPI5)
   {
-  /* USER CODE BEGIN SPI2_MspDeInit 0 */
+  /* USER CODE BEGIN SPI5_MspDeInit 0 */
 
-  /* USER CODE END SPI2_MspDeInit 0 */
+  /* USER CODE END SPI5_MspDeInit 0 */
     /* Peripheral clock disable */
-    __HAL_RCC_SPI2_CLK_DISABLE();
+    __HAL_RCC_SPI5_CLK_DISABLE();
 
-    /**SPI2 GPIO Configuration
-    PA12     ------> SPI2_SCK
-    PA11     ------> SPI2_NSS
-    PC2     ------> SPI2_MISO
-    PC3     ------> SPI2_MOSI
+    /**SPI5 GPIO Configuration
+    PK0     ------> SPI5_SCK
+    PK1     ------> SPI5_NSS
+    PJ11     ------> SPI5_MISO
+    PJ10     ------> SPI5_MOSI
     */
-    HAL_GPIO_DeInit(GPIOA, SPI2_SCK_Pin|PMOD_1_Pin);
+    HAL_GPIO_DeInit(GPIOK, ARD_D13_Pin|ARD_D10_Pin);
 
-    HAL_GPIO_DeInit(GPIOC, PMOD_3_Pin|PMOD_2_Pin);
+    HAL_GPIO_DeInit(GPIOJ, ARD_D12_Pin|ARD_D11_Pin);
 
-  /* USER CODE BEGIN SPI2_MspDeInit 1 */
+  /* USER CODE BEGIN SPI5_MspDeInit 1 */
 
-  /* USER CODE END SPI2_MspDeInit 1 */
+  /* USER CODE END SPI5_MspDeInit 1 */
   }
 
 }

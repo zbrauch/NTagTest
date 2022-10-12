@@ -67,18 +67,20 @@ void Error_Handler(void);
 #define STLINK_RX_GPIO_Port GPIOA
 #define CEC_CK_MCO1_Pin GPIO_PIN_8
 #define CEC_CK_MCO1_GPIO_Port GPIOA
-#define SPI2_SCK_Pin GPIO_PIN_12
-#define SPI2_SCK_GPIO_Port GPIOA
-#define PMOD_1_Pin GPIO_PIN_11
-#define PMOD_1_GPIO_Port GPIOA
 #define OSC_OUT_Pin GPIO_PIN_1
 #define OSC_OUT_GPIO_Port GPIOH
 #define OSC_IN_Pin GPIO_PIN_0
 #define OSC_IN_GPIO_Port GPIOH
-#define PMOD_3_Pin GPIO_PIN_2
-#define PMOD_3_GPIO_Port GPIOC
-#define PMOD_2_Pin GPIO_PIN_3
-#define PMOD_2_GPIO_Port GPIOC
+#define ARD_D13_Pin GPIO_PIN_0
+#define ARD_D13_GPIO_Port GPIOK
+#define ARD_D10_Pin GPIO_PIN_1
+#define ARD_D10_GPIO_Port GPIOK
+#define ARD_D12_Pin GPIO_PIN_11
+#define ARD_D12_GPIO_Port GPIOJ
+#define ARD_D11_Pin GPIO_PIN_10
+#define ARD_D11_GPIO_Port GPIOJ
+#define CSTest_Pin GPIO_PIN_0
+#define CSTest_GPIO_Port GPIOJ
 /* USER CODE BEGIN Private defines */
 
 /* USER CODE END Private defines */

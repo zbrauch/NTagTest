@@ -1,5 +1,8 @@
-../Core/Src/NTagRC522.cpp:6:9:uint8_t NTagRC522::writeRegister(uint8_t, uint8_t)	32	static
-../Core/Src/NTagRC522.cpp:14:9:uint8_t NTagRC522::readRegister(uint8_t, uint8_t)	32	static,ignoring_inline_asm
-../Core/Src/NTagRC522.cpp:25:6:void NTagRC522::SetI2CHandle(I2C_HandleTypeDef*)	16	static
-../Core/Src/NTagRC522.cpp:29:6:void NTagRC522::Init(uint8_t)	16	static
-../Core/Src/NTagRC522.cpp:33:9:uint8_t NTagRC522::SanityCheck(uint8_t)	16	static
+../Core/Src/NTagRC522.cpp:6:9:uint8_t NTagRC522::WriteRegister(uint8_t, uint8_t)	24	static
+../Core/Src/NTagRC522.cpp:19:9:uint8_t NTagRC522::ReadRegister(uint8_t)	32	static
+../Core/Src/NTagRC522.cpp:42:6:void NTagRC522::SetSPIHandle(SPI_HandleTypeDef*)	16	static
+../Core/Src/NTagRC522.cpp:46:6:void NTagRC522::Init()	16	static
+../Core/Src/NTagRC522.cpp:50:9:uint8_t NTagRC522::SanityCheck()	16	static
+../Core/Src/NTagRC522.cpp:53:9:uint8_t NTagRC522::SanityCheck2()	16	static
+../Core/Src/NTagRC522.cpp:58:9:uint8_t NTagRC522::GetWaterLevel()	16	static
+../Core/Src/NTagRC522.cpp:61:9:uint8_t NTagRC522::SetWaterLevel(uint8_t)	16	static
