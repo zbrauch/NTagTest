@@ -1,8 +1,29 @@
 ../Core/Src/NTagRC522.cpp:6:9:uint8_t NTagRC522::WriteRegister(uint8_t, uint8_t)	24	static
-../Core/Src/NTagRC522.cpp:19:9:uint8_t NTagRC522::ReadRegister(uint8_t)	32	static
-../Core/Src/NTagRC522.cpp:42:6:void NTagRC522::SetSPIHandle(SPI_HandleTypeDef*)	16	static
-../Core/Src/NTagRC522.cpp:46:6:void NTagRC522::Init()	16	static
-../Core/Src/NTagRC522.cpp:50:9:uint8_t NTagRC522::SanityCheck()	16	static
-../Core/Src/NTagRC522.cpp:53:9:uint8_t NTagRC522::SanityCheck2()	16	static
-../Core/Src/NTagRC522.cpp:58:9:uint8_t NTagRC522::GetWaterLevel()	16	static
-../Core/Src/NTagRC522.cpp:61:9:uint8_t NTagRC522::SetWaterLevel(uint8_t)	16	static
+../Core/Src/NTagRC522.cpp:20:9:uint8_t NTagRC522::WriteRegister(uint8_t, uint8_t, uint8_t*)	296	static
+../Core/Src/NTagRC522.cpp:41:9:uint8_t NTagRC522::SetBitsRegister(uint8_t, uint8_t)	16	static
+../Core/Src/NTagRC522.cpp:45:9:uint8_t NTagRC522::ClearBitsRegister(uint8_t, uint8_t)	16	static
+../Core/Src/NTagRC522.cpp:49:9:uint8_t NTagRC522::ReadRegister(uint8_t)	32	static
+../Core/Src/NTagRC522.cpp:64:9:uint8_t NTagRC522::ReadRegister(uint8_t, uint8_t, uint8_t*, uint8_t)	568	static
+../Core/Src/NTagRC522.cpp:92:9:uint8_t NTagRC522::CommunicateWithPICC(uint8_t, uint8_t, uint8_t*, uint8_t, uint8_t*, uint8_t*, uint8_t*, uint8_t)	48	static
+../Core/Src/NTagRC522.cpp:150:9:uint8_t NTagRC522::TransceiveData(uint8_t*, uint8_t, uint8_t*, uint8_t*, uint8_t*, uint8_t)	56	static
+../Core/Src/NTagRC522.cpp:156:9:uint8_t NTagRC522::CalculateCRC(uint8_t*, uint8_t, uint8_t*)	40	static
+../Core/Src/NTagRC522.cpp:189:1:NTagRC522::NTagRC522(SPI_HandleTypeDef*, void (*)(), void (*)())	24	static
+../Core/Src/NTagRC522.cpp:194:6:void NTagRC522::SetSPIHandle(SPI_HandleTypeDef*)	16	static
+../Core/Src/NTagRC522.cpp:198:6:void NTagRC522::Init()	16	static
+../Core/Src/NTagRC522.cpp:220:9:uint8_t NTagRC522::EnableAntenna()	16	static
+../Core/Src/NTagRC522.cpp:224:9:uint8_t NTagRC522::DisableAntenna()	16	static
+../Core/Src/NTagRC522.cpp:228:9:uint8_t NTagRC522::SetAntennaGain(uint8_t)	16	static
+../Core/Src/NTagRC522.cpp:233:9:uint8_t NTagRC522::WakeUpA(uint8_t*, uint8_t*)	48	static
+../Core/Src/NTagRC522.cpp:249:9:uint8_t NTagRC522::HaltA()	40	static
+../Core/Src/NTagRC522.cpp:277:9:uint8_t NTagRC522::SelectPICC(NTagRC522::Uid*, uint8_t)	80	static
+../Core/Src/NTagRC522.cpp:477:9:uint8_t NTagRC522::SelectPICCCas2(NTagRC522::Uid*, uint8_t, uint8_t*)	80	static
+../Core/Src/NTagRC522.cpp:604:6:bool NTagRC522::IsCardPresent()	24	static
+../Core/Src/NTagRC522.cpp:619:9:uint8_t NTagRC522::SoftReset()	24	static
+../Core/Src/NTagRC522.cpp:630:9:uint8_t NTagRC522::Authenticate(uint8_t, uint8_t, NTagRC522::Uid*, uint8_t*)	64	static
+../Core/Src/NTagRC522.cpp:651:9:uint8_t NTagRC522::StopCrypto()	16	static
+../Core/Src/NTagRC522.cpp:656:9:uint8_t NTagRC522::MIFARE_Read(uint8_t, uint8_t*, uint8_t*)	40	static
+../Core/Src/NTagRC522.cpp:665:9:uint8_t NTagRC522::MIFARE_Write(uint8_t, uint8_t*, uint8_t*)	72	static
+../Core/Src/NTagRC522.cpp:684:9:uint8_t NTagRC522::SanityCheck()	16	static
+../Core/Src/NTagRC522.cpp:687:9:uint8_t NTagRC522::SanityCheck2()	16	static
+../Core/Src/NTagRC522.cpp:692:9:uint8_t NTagRC522::GetWaterLevel()	16	static
+../Core/Src/NTagRC522.cpp:695:9:uint8_t NTagRC522::SetWaterLevel(uint8_t)	16	static

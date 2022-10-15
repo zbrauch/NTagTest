@@ -25,6 +25,7 @@
 #include <stdio.h>
 #include <stdarg.h>
 #include "NTagRC522.h"
+//#include "MFRC522.h"
 #include <string.h>
 /* USER CODE END Includes */
 
@@ -105,6 +106,17 @@ void vprintf(const char *fmt, ...) // custom printf() function
     va_start(argp, fmt);
     vprint(fmt, argp);
     va_end(argp);
+}
+
+void EnableCS() {
+	//vprintf("Enabling CS\r\n");
+	HAL_GPIO_WritePin(CSTest_GPIO_Port, CSTest_Pin, GPIO_PIN_RESET);
+	//osDelay(1);
+}
+void DisableCS() {
+	//vprintf("Disabling CS\r\n");
+	HAL_GPIO_WritePin(CSTest_GPIO_Port, CSTest_Pin, GPIO_PIN_SET);
+	//osDelay(1);
 }
 /* USER CODE END 0 */
 
@@ -591,9 +603,14 @@ void StartNTagTask(void *argument)
 {
 	/* USER CODE BEGIN StartNTagTask */
 	/* Infinite loop */
-	NTagRC522 ntag;
-	//ntag.SetI2CHandle(&hi2c4);
-	ntag.SetSPIHandle(&hspi5);
+	NTagRC522 ntag = NTagRC522(&hspi5, EnableCS, DisableCS);
+	ntag.Init();
+	ntag.SetAntennaGain(ntag.RxGain_max);
+	//ntag.SetSPIHandle(&hspi5);
+	//MFRC522 ntag = MFRC522(&hspi5, EnableCS, DisableCS);
+	//ntag.PCD_Init();
+	//ntag.PCD_SetAntennaGain(ntag.RxGain_avg);
+
 	vprintf("Start\r\n");
 	osDelay(1000);
 	/* Infinite loop */
@@ -605,41 +622,132 @@ void StartNTagTask(void *argument)
 		uint8_t versreg = 0x37;
 
 		/*read_result = ntag.SanityCheck();
-			vprintf("version: %d\r\n", read_result);
-			osDelay(5);
-			read_result = ntag.SanityCheck2();
-			vprintf("Second: %d\r\n", read_result);
-			osDelay(1000);*/
+		vprintf("version: %d\r\n", read_result);
+		osDelay(5);
+		read_result = ntag.SanityCheck2();
+		vprintf("Second: %d\r\n", read_result);
+		osDelay(1000);*/
 
-		HAL_GPIO_WritePin(CSTest_GPIO_Port, CSTest_Pin, GPIO_PIN_RESET);
-		osDelay(1);
-		ret = ntag.SetWaterLevel(0x00);
-		HAL_GPIO_WritePin(CSTest_GPIO_Port, CSTest_Pin, GPIO_PIN_SET);
-		osDelay(10);
-		HAL_GPIO_WritePin(CSTest_GPIO_Port, CSTest_Pin, GPIO_PIN_RESET);
-		osDelay(1);
-		read_result = ntag.GetWaterLevel();
-		HAL_GPIO_WritePin(CSTest_GPIO_Port, CSTest_Pin, GPIO_PIN_SET);
-		vprintf("WaterLevel 0: %d\r\n", read_result);
-		osDelay(100);
 
-		HAL_GPIO_WritePin(CSTest_GPIO_Port, CSTest_Pin, GPIO_PIN_RESET);
-		osDelay(1);
-		ret = ntag.SetWaterLevel(0x01);
-		HAL_GPIO_WritePin(CSTest_GPIO_Port, CSTest_Pin, GPIO_PIN_SET);
-		osDelay(10);
-		HAL_GPIO_WritePin(CSTest_GPIO_Port, CSTest_Pin, GPIO_PIN_RESET);
-		osDelay(1);
-		read_result = ntag.GetWaterLevel();
-		HAL_GPIO_WritePin(CSTest_GPIO_Port, CSTest_Pin, GPIO_PIN_SET);
-		vprintf("WaterLevel 1: %d\r\n", read_result);
-		osDelay(2000);
+
+		//ret = ntag.SetWaterLevel(0x00);
+		//read_result = ntag.GetWaterLevel();
+		//vprintf("WaterLevel 0: %d\r\n", read_result);
+		//osDelay(100);
+
+		//ret = ntag.SetWaterLevel(0x01);
+		//read_result = ntag.GetWaterLevel();
+		//vprintf("WaterLevel 1: %d\r\n", read_result);
+		ntag.HaltA();
+		ntag.StopCrypto();
+		if(ntag.IsCardPresent())
+		{
+			vprintf("PICC is present!\r\n");
+			NTagRC522::Uid uid;
+			uint8_t response[50] = {};
+			if(ntag.SelectPICCCas2(&uid, 0, response) == ntag.STATUS_OK) {
+				vprintf("PICC selected! UID:0x", uid.sak);
+				for(int i = 0; i < uid.size; i++)
+					vprintf("%.2X ", uid.uidByte[i]);
+				vprintf("\r\n");
+
+				uint8_t responseSize = 50;
+				uint8_t pageAddr = 0x04;
+				uint8_t status = ntag.MIFARE_Read(pageAddr, response, &responseSize);
+				if(status == ntag.STATUS_OK) {
+					vprintf("Data at block %.2X: ", pageAddr);
+					for(uint8_t i = 0; i < responseSize; i++)
+						vprintf("%.2X ", response[i]);
+					vprintf("\r\n");
+				}
+				else
+					vprintf("Read Error: %s\r\n", status);
+			}
+
+
+			/*uint8_t status = ntag.SelectPICC(&uid, 0);
+			if(status==NTagRC522::STATUS_OK) {
+				vprintf("PICC selected! SAK:%d, UID:0x", uid.sak);
+				for(int i = 0; i < uid.size; i++)
+					vprintf("%.2X ", uid.uidByte[i]);
+				vprintf("\r\n");
+
+				uint8_t key[6];
+				//for(uint8_t i = 0; i < 6; i++)
+					//key[i] = 0xFF;
+				key[0] = 0xD3;
+				key[1] = 0xF7;
+				key[2] = 0xD3;
+				key[3] = 0xF7;
+				key[4] = 0xD3;
+				key[5] = 0xF7;
+
+				//authenticate
+				uint8_t sector = 1, blockAddr = 4, trailerBlock = 7;
+				//status = ntag.Authenticate(ntag.PICC_CMD_MF_AUTH_KEY_A, trailerBlock, &uid, key);
+				//if(status == ntag.STATUS_OK) {
+					//vprintf("Authenticated Sector %d\r\n", sector);
+					uint8_t bufferSize = 16;
+					uint8_t buffer[50] = {};
+					for(uint8_t i = 0; i < 16; i++)
+						buffer[i] = 0x69;
+
+					//status = ntag.MIFARE_Write(blockAddr, buffer, &bufferSize);
+					//vprintf("Write status: %d\r\n", status);
+
+					uint8_t buffer2[50] = {};
+					bufferSize = 25;
+					status = ntag.MIFARE_Read(blockAddr, buffer2, &bufferSize);
+
+					vprintf("Data: ");
+					for(int i = 0; i < bufferSize; i++)
+						vprintf("%.2X", buffer2[i]);
+					vprintf(", Status: %d\r\n", status);
+				//}
+				//else
+				//	vprintf("Auth Failed: %d\r\n", status);
+			}
+			else if(status==NTagRC522::STATUS_COLLISION)
+				vprintf("COLLISION\r\n");
+			else if(status==NTagRC522::STATUS_CRC_WRONG)
+				vprintf("BAD CRC\r\n");
+			else
+				vprintf("Other Error: %d\r\n", status);*/
+		}
+		else
+			vprintf("No PICC...\r\n");
+
+		/*if(ntag.PICC_IsNewCardPresent())
+		{
+			vprintf("PICC is present!\r\n");
+			MFRC522::Uid uid;
+			uint8_t status = ntag.PICC_Select(&uid, 0);
+			if(status==MFRC522::STATUS_OK) {
+				vprintf("PICC selected! SAK:%d, UID:0x", uid.sak);
+				for(int i = 0; i < uid.size; i++)
+					vprintf("%.2X ", uid.uidByte[i]);
+				vprintf("\r\n");
+			}
+			else if(status==MFRC522::STATUS_COLLISION)
+				vprintf("COLLISION\r\n");
+			else if(status==MFRC522::STATUS_CRC_WRONG)
+				vprintf("BAD CRC\r\n");
+			else
+				vprintf("Other Error: %d\r\n", status);
+		}
+		else
+			vprintf("No PICC...\r\n");
+
+		vprintf("Version: %d\r\n", ntag.PCD_ReadRegister(ntag.VersionReg));
+		ntag.PCD_WriteRegister(ntag.WaterLevelReg, 0x00);*/
+
+		osDelay(400);
 
 
 	}
 	/* USER CODE END StartNTagTask */
-}
 
+}
 /**
   * @brief  Period elapsed callback in non blocking mode
   * @note   This function is called  when TIM1 interrupt took place, inside

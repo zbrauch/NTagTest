@@ -1,0 +1,45 @@
+../Core/Src/MFRC522.cpp:17:1:MFRC522::MFRC522(SPI_HandleTypeDef*, void (*)(), void (*)())	24	static
+../Core/Src/MFRC522.cpp:33:6:void MFRC522::PCD_WriteRegister(uint8_t, uint8_t)	24	static
+../Core/Src/MFRC522.cpp:46:6:void MFRC522::PCD_WriteRegister(uint8_t, uint8_t, uint8_t*)	296	static
+../Core/Src/MFRC522.cpp:65:9:uint8_t MFRC522::PCD_ReadRegister(uint8_t)	32	static
+../Core/Src/MFRC522.cpp:80:6:void MFRC522::PCD_ReadRegister(uint8_t, uint8_t, uint8_t*, uint8_t)	568	static
+../Core/Src/MFRC522.cpp:110:6:void MFRC522::PCD_SetRegisterBitMask(uint8_t, uint8_t)	16	static
+../Core/Src/MFRC522.cpp:118:6:void MFRC522::PCD_ClearRegisterBitMask(uint8_t, uint8_t)	16	static
+../Core/Src/MFRC522.cpp:127:21:MFRC522::StatusCode MFRC522::PCD_CalculateCRC(uint8_t*, uint8_t, uint8_t*)	40	static
+../Core/Src/MFRC522.cpp:170:6:void MFRC522::PCD_Init()	24	static
+../Core/Src/MFRC522.cpp:199:6:void MFRC522::PCD_Reset()	24	static
+../Core/Src/MFRC522.cpp:215:6:void MFRC522::PCD_AntennaOn()	24	static
+../Core/Src/MFRC522.cpp:226:6:void MFRC522::PCD_AntennaOff()	16	static
+../Core/Src/MFRC522.cpp:237:9:uint8_t MFRC522::PCD_GetAntennaGain()	16	static
+../Core/Src/MFRC522.cpp:246:6:void MFRC522::PCD_SetAntennaGain(uint8_t)	16	static
+../Core/Src/MFRC522.cpp:259:6:bool MFRC522::PCD_PerformSelfTest()	128	static
+../Core/Src/MFRC522.cpp:350:6:void MFRC522::PCD_SoftPowerDown()	24	static
+../Core/Src/MFRC522.cpp:356:6:void MFRC522::PCD_SoftPowerUp()	24	static
+../Core/Src/MFRC522.cpp:383:21:MFRC522::StatusCode MFRC522::PCD_TransceiveData(uint8_t*, uint8_t, uint8_t*, uint8_t*, uint8_t*, uint8_t, bool)	56	static
+../Core/Src/MFRC522.cpp:401:21:MFRC522::StatusCode MFRC522::PCD_CommunicateWithPICC(uint8_t, uint8_t, uint8_t*, uint8_t, uint8_t*, uint8_t*, uint8_t*, uint8_t, bool)	48	static
+../Core/Src/MFRC522.cpp:512:21:MFRC522::StatusCode MFRC522::PICC_RequestA(uint8_t*, uint8_t*)	24	static
+../Core/Src/MFRC522.cpp:524:21:MFRC522::StatusCode MFRC522::PICC_WakeupA(uint8_t*, uint8_t*)	24	static
+../Core/Src/MFRC522.cpp:536:21:MFRC522::StatusCode MFRC522::PICC_REQA_or_WUPA(uint8_t, uint8_t*, uint8_t*)	48	static
+../Core/Src/MFRC522.cpp:575:21:virtual MFRC522::StatusCode MFRC522::PICC_Select(MFRC522::Uid*, uint8_t)	80	static
+../Core/Src/MFRC522.cpp:792:21:MFRC522::StatusCode MFRC522::PICC_HaltA()	40	static
+../Core/Src/MFRC522.cpp:836:21:MFRC522::StatusCode MFRC522::PCD_Authenticate(uint8_t, uint8_t, MFRC522::MIFARE_Key*, MFRC522::Uid*)	64	static
+../Core/Src/MFRC522.cpp:866:6:void MFRC522::PCD_StopCrypto1()	16	static
+../Core/Src/MFRC522.cpp:887:21:MFRC522::StatusCode MFRC522::MIFARE_Read(uint8_t, uint8_t*, uint8_t*)	48	static
+../Core/Src/MFRC522.cpp:922:21:MFRC522::StatusCode MFRC522::MIFARE_Write(uint8_t, uint8_t*, uint8_t)	32	static
+../Core/Src/MFRC522.cpp:957:21:MFRC522::StatusCode MFRC522::MIFARE_Ultralight_Write(uint8_t, uint8_t*, uint8_t)	32	static
+../Core/Src/MFRC522.cpp:990:21:MFRC522::StatusCode MFRC522::MIFARE_Decrement(uint8_t, int32_t)	24	static
+../Core/Src/MFRC522.cpp:1004:21:MFRC522::StatusCode MFRC522::MIFARE_Increment(uint8_t, int32_t)	24	static
+../Core/Src/MFRC522.cpp:1018:21:MFRC522::StatusCode MFRC522::MIFARE_Restore(uint8_t)	16	static
+../Core/Src/MFRC522.cpp:1030:21:MFRC522::StatusCode MFRC522::MIFARE_TwoStepHelper(uint8_t, uint8_t, int32_t)	32	static
+../Core/Src/MFRC522.cpp:1061:21:MFRC522::StatusCode MFRC522::MIFARE_Transfer(uint8_t)	24	static
+../Core/Src/MFRC522.cpp:1087:21:MFRC522::StatusCode MFRC522::MIFARE_GetValue(uint8_t, int32_t*)	48	static
+../Core/Src/MFRC522.cpp:1112:21:MFRC522::StatusCode MFRC522::MIFARE_SetValue(uint8_t, int32_t)	48	static
+../Core/Src/MFRC522.cpp:1142:21:MFRC522::StatusCode MFRC522::PCD_NTAG216_AUTH(uint8_t*, uint8_t*)	80	static
+../Core/Src/MFRC522.cpp:1189:21:MFRC522::StatusCode MFRC522::PCD_MIFARE_Transceive(uint8_t*, uint8_t, bool)	72	static
+../Core/Src/MFRC522.cpp:1236:20:static MFRC522::PICC_Type MFRC522::PICC_GetType(uint8_t)	16	static
+../Core/Src/MFRC522.cpp:1592:6:void MFRC522::MIFARE_SetAccessBits(uint8_t*, uint8_t, uint8_t, uint8_t, uint8_t)	32	static
+../Core/Src/MFRC522.cpp:1619:6:bool MFRC522::MIFARE_OpenUidBackdoor(bool)	72	static
+../Core/Src/MFRC522.cpp:1689:6:bool MFRC522::MIFARE_SetUid(uint8_t*, uint8_t, bool)	72	static
+../Core/Src/MFRC522.cpp:1791:6:bool MFRC522::MIFARE_UnbrickUidSector(bool)	48	static
+../Core/Src/MFRC522.cpp:1818:6:virtual bool MFRC522::PICC_IsNewCardPresent()	24	static
+../Core/Src/MFRC522.cpp:1840:6:virtual bool MFRC522::PICC_ReadCardSerial()	24	static
