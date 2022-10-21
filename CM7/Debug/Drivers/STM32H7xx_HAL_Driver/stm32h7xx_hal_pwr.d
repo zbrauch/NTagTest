@@ -1,5 +1,5 @@
 Drivers/STM32H7xx_HAL_Driver/stm32h7xx_hal_pwr.o: \
- D:/School/ECE4981/workspace_1.10.1/NTagTest/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_pwr.c \
+ C:/Users/Shnappers/STM32CubeIDE/workspace_1.10.1/NTagTest/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_pwr.c \
  ../../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal.h \
  ../Core/Inc/stm32h7xx_hal_conf.h \
  ../../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_rcc.h \

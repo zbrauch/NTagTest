@@ -54,6 +54,8 @@ I2C_HandleTypeDef hi2c4;
 
 SPI_HandleTypeDef hspi5;
 
+TIM_HandleTypeDef htim13;
+
 UART_HandleTypeDef huart1;
 
 /* Definitions for defaultTask */
@@ -67,6 +69,13 @@ const osThreadAttr_t defaultTask_attributes = {
 osThreadId_t NTagTaskHandle;
 const osThreadAttr_t NTagTask_attributes = {
   .name = "NTagTask",
+  .stack_size = 256 * 4,
+  .priority = (osPriority_t) osPriorityNormal1,
+};
+/* Definitions for GrantTask */
+osThreadId_t GrantTaskHandle;
+const osThreadAttr_t GrantTask_attributes = {
+  .name = "GrantTask",
   .stack_size = 256 * 4,
   .priority = (osPriority_t) osPriorityNormal,
 };
@@ -82,8 +91,10 @@ static void MX_USART1_UART_Init(void);
 static void MX_I2C1_Init(void);
 static void MX_I2C4_Init(void);
 static void MX_SPI5_Init(void);
+static void MX_TIM13_Init(void);
 void StartDefaultTask(void *argument);
 void StartNTagTask(void *argument);
+void GrantTaskEntry(void *argument);
 
 /* USER CODE BEGIN PFP */
 
@@ -184,6 +195,7 @@ Error_Handler();
   MX_I2C1_Init();
   MX_I2C4_Init();
   MX_SPI5_Init();
+  MX_TIM13_Init();
   /* USER CODE BEGIN 2 */
 
   /* USER CODE END 2 */
@@ -213,6 +225,9 @@ Error_Handler();
 
   /* creation of NTagTask */
   NTagTaskHandle = osThreadNew(StartNTagTask, NULL, &NTagTask_attributes);
+
+  /* creation of GrantTask */
+  GrantTaskHandle = osThreadNew(GrantTaskEntry, NULL, &GrantTask_attributes);
 
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
@@ -475,6 +490,52 @@ static void MX_SPI5_Init(void)
 }
 
 /**
+  * @brief TIM13 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_TIM13_Init(void)
+{
+
+  /* USER CODE BEGIN TIM13_Init 0 */
+
+  /* USER CODE END TIM13_Init 0 */
+
+  TIM_OC_InitTypeDef sConfigOC = {0};
+
+  /* USER CODE BEGIN TIM13_Init 1 */
+
+  /* USER CODE END TIM13_Init 1 */
+  htim13.Instance = TIM13;
+  htim13.Init.Prescaler = 16;
+  htim13.Init.CounterMode = TIM_COUNTERMODE_UP;
+  htim13.Init.Period = 65535;
+  htim13.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+  htim13.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
+  if (HAL_TIM_Base_Init(&htim13) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  if (HAL_TIM_PWM_Init(&htim13) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sConfigOC.OCMode = TIM_OCMODE_PWM1;
+  sConfigOC.Pulse = 0;
+  sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
+  sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
+  if (HAL_TIM_PWM_ConfigChannel(&htim13, &sConfigOC, TIM_CHANNEL_1) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN TIM13_Init 2 */
+
+  /* USER CODE END TIM13_Init 2 */
+  HAL_TIM_MspPostInit(&htim13);
+
+}
+
+/**
   * @brief USART1 Initialization Function
   * @param None
   * @retval None
@@ -538,6 +599,7 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOA_CLK_ENABLE();
   __HAL_RCC_GPIOH_CLK_ENABLE();
   __HAL_RCC_GPIOK_CLK_ENABLE();
+  __HAL_RCC_GPIOF_CLK_ENABLE();
   __HAL_RCC_GPIOJ_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
@@ -587,7 +649,7 @@ void StartDefaultTask(void *argument)
   /* Infinite loop */
   for(;;)
   {
-    osDelay(1);
+    osDelay(200);
   }
   /* USER CODE END 5 */
 }
@@ -601,153 +663,178 @@ void StartDefaultTask(void *argument)
 /* USER CODE END Header_StartNTagTask */
 void StartNTagTask(void *argument)
 {
-	/* USER CODE BEGIN StartNTagTask */
+  /* USER CODE BEGIN StartNTagTask */
 	/* Infinite loop */
-	NTagRC522 ntag = NTagRC522(&hspi5, EnableCS, DisableCS);
-	ntag.Init();
-	ntag.SetAntennaGain(ntag.RxGain_max);
-	//ntag.SetSPIHandle(&hspi5);
-	//MFRC522 ntag = MFRC522(&hspi5, EnableCS, DisableCS);
-	//ntag.PCD_Init();
-	//ntag.PCD_SetAntennaGain(ntag.RxGain_avg);
+		NTagRC522 ntag = NTagRC522(&hspi5, EnableCS, DisableCS);
+		ntag.Init();
+		ntag.SetAntennaGain(ntag.RxGain_max);
+		//ntag.SetSPIHandle(&hspi5);
+		//MFRC522 ntag = MFRC522(&hspi5, EnableCS, DisableCS);
+		//ntag.PCD_Init();
+		//ntag.PCD_SetAntennaGain(ntag.RxGain_avg);
 
-	vprintf("Start\r\n");
-	osDelay(1000);
-	/* Infinite loop */
-	for(;;)
-	{
-		//uint8_t test = ntag.SanityCheck(0x28);
-		//vprintf("Version: %d\r\n", test);
-		uint8_t read_result, ret;
-		uint8_t versreg = 0x37;
-
-		/*read_result = ntag.SanityCheck();
-		vprintf("version: %d\r\n", read_result);
-		osDelay(5);
-		read_result = ntag.SanityCheck2();
-		vprintf("Second: %d\r\n", read_result);
-		osDelay(1000);*/
-
-
-
-		//ret = ntag.SetWaterLevel(0x00);
-		//read_result = ntag.GetWaterLevel();
-		//vprintf("WaterLevel 0: %d\r\n", read_result);
-		//osDelay(100);
-
-		//ret = ntag.SetWaterLevel(0x01);
-		//read_result = ntag.GetWaterLevel();
-		//vprintf("WaterLevel 1: %d\r\n", read_result);
-		ntag.HaltA();
-		ntag.StopCrypto();
-		if(ntag.IsCardPresent())
+		vprintf("Start\r\n");
+		osDelay(1000);
+		/* Infinite loop */
+		for(;;)
 		{
-			vprintf("PICC is present!\r\n");
-			NTagRC522::Uid uid;
-			uint8_t response[50] = {};
-			if(ntag.SelectPICCCas2(&uid, 0, response) == ntag.STATUS_OK) {
-				vprintf("PICC selected! UID:0x", uid.sak);
-				for(int i = 0; i < uid.size; i++)
-					vprintf("%.2X ", uid.uidByte[i]);
-				vprintf("\r\n");
+			//uint8_t test = ntag.SanityCheck(0x28);
+			//vprintf("Version: %d\r\n", test);
+			uint8_t read_result, ret;
+			uint8_t versreg = 0x37;
 
-				uint8_t responseSize = 50;
-				uint8_t pageAddr = 0x04;
-				uint8_t status = ntag.MIFARE_Read(pageAddr, response, &responseSize);
-				if(status == ntag.STATUS_OK) {
-					vprintf("Data at block %.2X: ", pageAddr);
-					for(uint8_t i = 0; i < responseSize; i++)
-						vprintf("%.2X ", response[i]);
+			/*read_result = ntag.SanityCheck();
+			vprintf("version: %d\r\n", read_result);
+			osDelay(5);
+			read_result = ntag.SanityCheck2();
+			vprintf("Second: %d\r\n", read_result);
+			osDelay(1000);*/
+
+
+
+			//ret = ntag.SetWaterLevel(0x00);
+			//read_result = ntag.GetWaterLevel();
+			//vprintf("WaterLevel 0: %d\r\n", read_result);
+			//osDelay(100);
+
+			//ret = ntag.SetWaterLevel(0x01);
+			//read_result = ntag.GetWaterLevel();
+			//vprintf("WaterLevel 1: %d\r\n", read_result);
+			ntag.HaltA();
+			ntag.StopCrypto();
+			if(ntag.IsCardPresent())
+			{
+				vprintf("PICC is present!\r\n");
+				NTagRC522::Uid uid;
+				uint8_t response[50] = {};
+				if(ntag.SelectPICCCas2(&uid, 0, response) == ntag.STATUS_OK) {
+					vprintf("PICC selected! UID:0x", uid.sak);
+					for(int i = 0; i < uid.size; i++)
+						vprintf("%.2X ", uid.uidByte[i]);
+					vprintf("\r\n");
+
+					uint8_t responseSize = 50;
+					uint8_t pageAddr = 0x04;
+					uint8_t status = ntag.MIFARE_Read(pageAddr, response, &responseSize);
+					if(status == ntag.STATUS_OK) {
+						vprintf("Data at block %.2X: ", pageAddr);
+						for(uint8_t i = 0; i < responseSize; i++)
+							vprintf("%.2X ", response[i]);
+						vprintf("\r\n");
+					}
+					else
+						vprintf("Read Error: %s\r\n", status);
+				}
+
+
+				/*uint8_t status = ntag.SelectPICC(&uid, 0);
+				if(status==NTagRC522::STATUS_OK) {
+					vprintf("PICC selected! SAK:%d, UID:0x", uid.sak);
+					for(int i = 0; i < uid.size; i++)
+						vprintf("%.2X ", uid.uidByte[i]);
+					vprintf("\r\n");
+
+					uint8_t key[6];
+					//for(uint8_t i = 0; i < 6; i++)
+						//key[i] = 0xFF;
+					key[0] = 0xD3;
+					key[1] = 0xF7;
+					key[2] = 0xD3;
+					key[3] = 0xF7;
+					key[4] = 0xD3;
+					key[5] = 0xF7;
+
+					//authenticate
+					uint8_t sector = 1, blockAddr = 4, trailerBlock = 7;
+					//status = ntag.Authenticate(ntag.PICC_CMD_MF_AUTH_KEY_A, trailerBlock, &uid, key);
+					//if(status == ntag.STATUS_OK) {
+						//vprintf("Authenticated Sector %d\r\n", sector);
+						uint8_t bufferSize = 16;
+						uint8_t buffer[50] = {};
+						for(uint8_t i = 0; i < 16; i++)
+							buffer[i] = 0x69;
+
+						//status = ntag.MIFARE_Write(blockAddr, buffer, &bufferSize);
+						//vprintf("Write status: %d\r\n", status);
+
+						uint8_t buffer2[50] = {};
+						bufferSize = 25;
+						status = ntag.MIFARE_Read(blockAddr, buffer2, &bufferSize);
+
+						vprintf("Data: ");
+						for(int i = 0; i < bufferSize; i++)
+							vprintf("%.2X", buffer2[i]);
+						vprintf(", Status: %d\r\n", status);
+					//}
+					//else
+					//	vprintf("Auth Failed: %d\r\n", status);
+				}
+				else if(status==NTagRC522::STATUS_COLLISION)
+					vprintf("COLLISION\r\n");
+				else if(status==NTagRC522::STATUS_CRC_WRONG)
+					vprintf("BAD CRC\r\n");
+				else
+					vprintf("Other Error: %d\r\n", status);*/
+			}
+			else
+				vprintf("No PICC...\r\n");
+
+			/*if(ntag.PICC_IsNewCardPresent())
+			{
+				vprintf("PICC is present!\r\n");
+				MFRC522::Uid uid;
+				uint8_t status = ntag.PICC_Select(&uid, 0);
+				if(status==MFRC522::STATUS_OK) {
+					vprintf("PICC selected! SAK:%d, UID:0x", uid.sak);
+					for(int i = 0; i < uid.size; i++)
+						vprintf("%.2X ", uid.uidByte[i]);
 					vprintf("\r\n");
 				}
+				else if(status==MFRC522::STATUS_COLLISION)
+					vprintf("COLLISION\r\n");
+				else if(status==MFRC522::STATUS_CRC_WRONG)
+					vprintf("BAD CRC\r\n");
 				else
-					vprintf("Read Error: %s\r\n", status);
+					vprintf("Other Error: %d\r\n", status);
 			}
-
-
-			/*uint8_t status = ntag.SelectPICC(&uid, 0);
-			if(status==NTagRC522::STATUS_OK) {
-				vprintf("PICC selected! SAK:%d, UID:0x", uid.sak);
-				for(int i = 0; i < uid.size; i++)
-					vprintf("%.2X ", uid.uidByte[i]);
-				vprintf("\r\n");
-
-				uint8_t key[6];
-				//for(uint8_t i = 0; i < 6; i++)
-					//key[i] = 0xFF;
-				key[0] = 0xD3;
-				key[1] = 0xF7;
-				key[2] = 0xD3;
-				key[3] = 0xF7;
-				key[4] = 0xD3;
-				key[5] = 0xF7;
-
-				//authenticate
-				uint8_t sector = 1, blockAddr = 4, trailerBlock = 7;
-				//status = ntag.Authenticate(ntag.PICC_CMD_MF_AUTH_KEY_A, trailerBlock, &uid, key);
-				//if(status == ntag.STATUS_OK) {
-					//vprintf("Authenticated Sector %d\r\n", sector);
-					uint8_t bufferSize = 16;
-					uint8_t buffer[50] = {};
-					for(uint8_t i = 0; i < 16; i++)
-						buffer[i] = 0x69;
-
-					//status = ntag.MIFARE_Write(blockAddr, buffer, &bufferSize);
-					//vprintf("Write status: %d\r\n", status);
-
-					uint8_t buffer2[50] = {};
-					bufferSize = 25;
-					status = ntag.MIFARE_Read(blockAddr, buffer2, &bufferSize);
-
-					vprintf("Data: ");
-					for(int i = 0; i < bufferSize; i++)
-						vprintf("%.2X", buffer2[i]);
-					vprintf(", Status: %d\r\n", status);
-				//}
-				//else
-				//	vprintf("Auth Failed: %d\r\n", status);
-			}
-			else if(status==NTagRC522::STATUS_COLLISION)
-				vprintf("COLLISION\r\n");
-			else if(status==NTagRC522::STATUS_CRC_WRONG)
-				vprintf("BAD CRC\r\n");
 			else
-				vprintf("Other Error: %d\r\n", status);*/
+				vprintf("No PICC...\r\n");
+
+			vprintf("Version: %d\r\n", ntag.PCD_ReadRegister(ntag.VersionReg));
+			ntag.PCD_WriteRegister(ntag.WaterLevelReg, 0x00);*/
+
+			osDelay(400);
+
+
 		}
-		else
-			vprintf("No PICC...\r\n");
-
-		/*if(ntag.PICC_IsNewCardPresent())
-		{
-			vprintf("PICC is present!\r\n");
-			MFRC522::Uid uid;
-			uint8_t status = ntag.PICC_Select(&uid, 0);
-			if(status==MFRC522::STATUS_OK) {
-				vprintf("PICC selected! SAK:%d, UID:0x", uid.sak);
-				for(int i = 0; i < uid.size; i++)
-					vprintf("%.2X ", uid.uidByte[i]);
-				vprintf("\r\n");
-			}
-			else if(status==MFRC522::STATUS_COLLISION)
-				vprintf("COLLISION\r\n");
-			else if(status==MFRC522::STATUS_CRC_WRONG)
-				vprintf("BAD CRC\r\n");
-			else
-				vprintf("Other Error: %d\r\n", status);
-		}
-		else
-			vprintf("No PICC...\r\n");
-
-		vprintf("Version: %d\r\n", ntag.PCD_ReadRegister(ntag.VersionReg));
-		ntag.PCD_WriteRegister(ntag.WaterLevelReg, 0x00);*/
-
-		osDelay(400);
-
-
-	}
-	/* USER CODE END StartNTagTask */
-
+  /* USER CODE END StartNTagTask */
 }
+
+/* USER CODE BEGIN Header_GrantTaskEntry */
+/**
+* @brief Function implementing the GrantTask thread.
+* @param argument: Not used
+* @retval None
+*/
+/* USER CODE END Header_GrantTaskEntry */
+void GrantTaskEntry(void *argument)
+{
+  /* USER CODE BEGIN GrantTaskEntry */
+	htim13.Instance->CCR1 = 32000;
+htim13.Instance->CCR2 = 20;
+	osDelay(200);
+	HAL_TIM_PWM_Start(&htim13, TIM_CHANNEL_1);
+  /* Infinite loop */
+  for(;;)
+  {
+	  htim13.Instance->CCR1 = 0xFFFF;
+	  htim13.Instance->CCR2 = 0;
+	  //HAL_TIM_PWM_Start(&htim13, TIM_CHANNEL_1);
+    osDelay(2000);
+  }
+  /* USER CODE END GrantTaskEntry */
+}
+
 /**
   * @brief  Period elapsed callback in non blocking mode
   * @note   This function is called  when TIM1 interrupt took place, inside

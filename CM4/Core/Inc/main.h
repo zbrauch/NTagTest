@@ -175,8 +175,6 @@ void Error_Handler(void);
 #define QSPI_BK1_IO3_GPIO_Port GPIOF
 #define QSPI_BK1_IO2_Pin GPIO_PIN_7
 #define QSPI_BK1_IO2_GPIO_Port GPIOF
-#define PMOD_14_ARD_D3_Pin GPIO_PIN_8
-#define PMOD_14_ARD_D3_GPIO_Port GPIOF
 #define ULPI_STP_Pin GPIO_PIN_0
 #define ULPI_STP_GPIO_Port GPIOC
 #define ARD_A1_Pin GPIO_PIN_10
